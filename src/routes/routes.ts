@@ -41,9 +41,9 @@ class Routes {
                 .then( (equipos) => {
                     db.desconectarBD()
                     .then( () => resolve(equipos) )
-                    .catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                    //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
                 })
-                .catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
+                //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
             })
             .catch( (error) => reject(`Error conectando a ${db._cadenaConexion}: ${error}`) )
         })
@@ -59,9 +59,9 @@ class Routes {
                 .then( (vehiculos) => {
                     db.desconectarBD()
                     .then( () => resolve(vehiculos) )
-                    .catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                    //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
                 })
-                .catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
+                //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
             })
             .catch( (error) => reject(`Error conectando a ${db._cadenaConexion}: ${error}`) )
         })
@@ -77,9 +77,9 @@ class Routes {
                 .then( (recambios) => {
                     db.desconectarBD()
                     .then( () => resolve(recambios) )
-                    .catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                    //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
                 })
-                .catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
+                //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
             })
             .catch( (error) => reject(`Error conectando a ${db._cadenaConexion}: ${error}`) )
         })
@@ -97,9 +97,9 @@ class Routes {
                 .then( (granPremios) => {
                     db.desconectarBD()
                     .then( () => resolve(granPremios) )
-                    .catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                    //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
                 })
-                .catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
+                //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
             })
             .catch( (error) => reject(`Error conectando a ${db._cadenaConexion}: ${error}`) )
         })
@@ -115,9 +115,9 @@ class Routes {
                 .then( (reparaciones) => {
                     db.desconectarBD()
                     .then( () => resolve(reparaciones) )
-                    .catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                    //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
                 })
-                .catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
+                //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
             })
             .catch( (error) => reject(`Error conectando a ${db._cadenaConexion}: ${error}`) )
         })
@@ -182,9 +182,9 @@ class Routes {
                 .then( (escuderia) => {
                     db.desconectarBD()
                     .then( () => resolve(escuderia) )
-                    .catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                    //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
                 })
-                .catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
+                //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
             })
             .catch( (error) => reject(`Error conectando a ${db._cadenaConexion}: ${error}`) )
         })
@@ -201,7 +201,7 @@ class Routes {
                 
                 let arrayResultado : Array<iSalario> =[]
                 
-                let query: any =  await Personal.find({})
+                let query: any =  await Personal.find({_idEscuderia: req.params.idEscuderia})
 
                 console.log(query)
         
@@ -253,6 +253,46 @@ class Routes {
                     })
                     await db.desconectarBD()
                 }
+
+
+        private getPrecioXReparacion = async (req: Request, res: Response) => {
+            await db.conectarBD()
+                .then( async () => {
+                    let query : any = await Recambios.aggregate([
+                        {$match: {_idReparacion: req.params.idReparacion}},
+                        {
+                            $lookup: {
+                                localField: "_idPieza",
+                                from: "reparaciones",
+                                foreignField: "_idPieza",
+                                as: "extended"
+                            }
+                        },
+                        { $unwind: "$extended" },
+                        {
+                            $group: {
+                                _id: {_idPieza: "$_idPieza",
+                                _idEscuderia: "$_idEscuderia"},
+                                precio: {
+                                    $sum: {$multiply :["$_precio", "$extended._cantidad"]}
+                                }
+                            }
+                        }
+                      
+                        
+                        
+                        ])
+                    .then( (precioXReparacion) => {
+                        db.desconectarBD()
+                        .then( () => res.json(precioXReparacion) )
+                    })
+                })
+                .catch( (error) => res.send(`Error conectando a ${db._cadenaConexion}: ${error}`) )
+        }
+
+
+
+            
             
 
         private getPuntos = async (req: Request, res: Response) => {
@@ -309,15 +349,18 @@ class Routes {
                         .then( (puntos) => {
                             db.desconectarBD()
                             .then( () => resolve(puntos) )
-                            .catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                            //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
                         })
-                        .catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
+                        //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
                     })
                     .catch( (error) => reject(`Error conectando a ${db._cadenaConexion}: ${error}`) )
             })
             res.json(await promise)
             db.desconectarBD()
         }
+
+
+
 
 
 
@@ -732,9 +775,9 @@ arrayResultado.push(dPuntosPilotos)
                 .then( (personal) => {
                     db.desconectarBD()
                     .then( () => resolve(personal) )
-                    .catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                    //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
                 })
-                .catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
+                //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
             })
             .catch( (error) => reject(`Error conectando a ${db._cadenaConexion}: ${error}`) )
         })
@@ -751,9 +794,9 @@ arrayResultado.push(dPuntosPilotos)
                 .then( (equipo) => {
                     db.desconectarBD()
                     .then( () => resolve(equipo) )
-                    .catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                    //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
                 })
-                .catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
+                //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
             })
             .catch( (error) => reject(`Error conectando a ${db._cadenaConexion}: ${error}`) )
         })
@@ -769,9 +812,9 @@ arrayResultado.push(dPuntosPilotos)
                 .then( (reparacion) => {
                     db.desconectarBD()
                     .then( () => resolve(reparacion) )
-                    .catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                    //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
                 })
-                .catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
+                //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
             })
             .catch( (error) => reject(`Error conectando a ${db._cadenaConexion}: ${error}`) )
         })
@@ -1085,9 +1128,44 @@ arrayResultado.push(dPuntosPilotos)
         let fecha = new Date()
         const {idReparacion} = req.params
         console.log(idReparacion)
-        console.log(req.body)
+        const {_idReparacion, _idIngeniero, _idPieza, _idCoche, _cantidad, _estado} = req.body
+        console.log(_estado)
 
         await db.conectarBD()
+
+        
+
+        if (_estado == 'Cancelado'){
+            await Reparaciones.findOneAndUpdate(
+                {_idReparacion: idReparacion}, 
+                {
+                    _cantidad: _cantidad,
+                    _estado: _estado,
+                    _fechaCancelacion: fecha
+                },{
+                    new: true,
+                    runValidators: true
+                })
+                //console.log(_cantidad)
+
+                let query= await Recambios.find({_idPieza: _idPieza})
+                let cantidad = query[0]._cantidadTotal
+                //console.log(cantidad)
+                let nuevaCantidad = cantidad + _cantidad
+                //console.log(nuevaCantidad)
+
+                 await Recambios.findOneAndUpdate(
+                    {_idPieza:_idPieza},
+                    {_cantidadTotal: nuevaCantidad}
+                    ,{
+                        new: true,
+                        runValidators: true
+                    })
+                    .then( (doc: any) => res.send(doc))
+                    .catch( (err: any) => res.send('Error: '+ err)) 
+
+        } else{
+
         await Reparaciones.findOneAndUpdate(
             {_idReparacion: idReparacion},
             {
@@ -1097,13 +1175,13 @@ arrayResultado.push(dPuntosPilotos)
                 //_idPieza: req.body._idPieza,
                 _fecha: fecha,
                 //_cantidad: req.body._cantidad,
-                _estado: req.body._estado
+                _estado: _estado
             },{
                 new: true,
                 runValidators: true
             })
             .then( (doc: any) => res.send(doc))
-            .catch( (err: any) => res.send('Error: '+ err))
+            .catch( (err: any) => res.send('Error: '+ err))}
         await db.desconectarBD()
     }
 
@@ -1139,6 +1217,18 @@ arrayResultado.push(dPuntosPilotos)
         .catch( (error) => res.send(`Error conectando a ${db._cadenaConexion}: ${error}`))
         await db.conectarBD()
     }
+
+    private deletePieza = async (req: Request, res: Response) => {
+        await db.conectarBD()
+        .then( async () => {
+            Recambios.findOneAndDelete({_idPieza: req.params.idPieza})
+            .then( (mensaje) => res.send(`El documento se ha eliminado correctamente en la base de datos ${mensaje}`))
+            .catch( (error) => res.send(`Ha habido un error en la eliminación del documento a ${db._cadenaConexion}: ${error}`))
+        })
+        .catch( (error) => res.send(`Error conectando a ${db._cadenaConexion}: ${error}`))
+        await db.conectarBD()
+    }
+
 
 //******************************************************************************************************************************* */
 
@@ -1228,7 +1318,6 @@ arrayResultado.push(dPuntosPilotos)
                             let borrado : any = await Reparaciones.findOneAndDelete({_idReparacion: dSchema._idReparacion}) 
                             console.log(dSchema._idReparacion)
                             if (borrado){
-                                let x : number =1
                                 console.log("borrado")
                                 res.send("borrado")
                                 
@@ -1243,7 +1332,6 @@ arrayResultado.push(dPuntosPilotos)
 
                             let actualizar : any = await Recambios.findOneAndUpdate(search, update, options)
                             if (actualizar){
-                                let x : number =2
                                 console.log("actualizado")
                                 res.send("actualizado")
                             }
@@ -1271,12 +1359,14 @@ arrayResultado.push(dPuntosPilotos)
     misRutas(){ 
         this._router.get('/equipos', this.getEquipos)
         this._router.get('/personal/:idEscuderia', this.getPersonalEscuderia)
-        this._router.get('/equipos/:idEscuderia', this.getEquipoId)
+        this._router.get('/equipo/:idEscuderia', this.getEquipoId)
         this._router.get('/recambios', this.getRecambios)
         this._router.get('/reparacion/:idReparacion', this.getReparacionId)
         this._router.get('/vehiculos', this.getVehiculos)
         this._router.get('/granPremios', this.getGranPremios)
         this._router.get('/reparaciones', this.getReparaciones)
+
+        this._router.get('/precioRecambios/:idPieza', this.getPrecioXReparacion)
 
 
         this._router.get('/puntos', this.getPuntos)
@@ -1286,7 +1376,7 @@ arrayResultado.push(dPuntosPilotos)
 
         this._router.get('/escuderia', this.getEscuderia)
 
-        this._router.get('/salario', this.getSalarios)
+        this._router.get('/salarios/:idEscuderia', this.getSalarios)
 
         this._router.post('/equipo', this.postEquipo)
         this._router.post('/reparacion', this.postReparacion)
@@ -1298,7 +1388,7 @@ arrayResultado.push(dPuntosPilotos)
         this._router.post('/personal/mecanico', this.postMecanico)
         this._router.post('/granPremio', this.postGranPremio)  //funciona
         this._router.post('/boxes', this.postBox)
-        this._router.put('/recambio/:idPieza', this.updateRecambio)
+        this._router.put('/recambio/:idPieza', this.updateRecambio)//perfect
         
         this._router.put('/reparacion/:idReparacion', this.updateReparacion)
         
@@ -1310,6 +1400,7 @@ arrayResultado.push(dPuntosPilotos)
 
         this._router.delete('/personal/:idPersonal', this.deletePersonal)
         this._router.delete('/equipo/:idEscuderia', this.deleteEscuderia)
+        this._router.delete('/recambio/:idPieza', this.deletePieza)
         
     }
 
@@ -1322,7 +1413,5 @@ const obj = new Routes()
 obj.misRutas()
 export const routes = obj.router
 
-function toISOString(): any {
-    throw new Error('Function not implemented.')
-}
+
 

@@ -32,10 +32,10 @@ class Routes {
                     equipoSchema_1.Equipos.find({})
                         .then((equipos) => {
                         database_1.db.desconectarBD()
-                            .then(() => resolve(equipos))
-                            .catch((error) => reject(`Error desconectando de ${database_1.db._cadenaConexion}: ${error}`));
-                    })
-                        .catch((error) => reject(`Error consultando a ${database_1.db._cadenaConexion}: ${error}`));
+                            .then(() => resolve(equipos));
+                        //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                    });
+                    //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
                 }))
                     .catch((error) => reject(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             }));
@@ -49,10 +49,10 @@ class Routes {
                     vehiculoSchema_1.Vehiculos.find({})
                         .then((vehiculos) => {
                         database_1.db.desconectarBD()
-                            .then(() => resolve(vehiculos))
-                            .catch((error) => reject(`Error desconectando de ${database_1.db._cadenaConexion}: ${error}`));
-                    })
-                        .catch((error) => reject(`Error consultando a ${database_1.db._cadenaConexion}: ${error}`));
+                            .then(() => resolve(vehiculos));
+                        //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                    });
+                    //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
                 }))
                     .catch((error) => reject(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             }));
@@ -66,10 +66,10 @@ class Routes {
                     recambioSchema_1.Recambios.find({})
                         .then((recambios) => {
                         database_1.db.desconectarBD()
-                            .then(() => resolve(recambios))
-                            .catch((error) => reject(`Error desconectando de ${database_1.db._cadenaConexion}: ${error}`));
-                    })
-                        .catch((error) => reject(`Error consultando a ${database_1.db._cadenaConexion}: ${error}`));
+                            .then(() => resolve(recambios));
+                        //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                    });
+                    //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
                 }))
                     .catch((error) => reject(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             }));
@@ -83,10 +83,10 @@ class Routes {
                     granPremioSchema_1.granPremios.find({})
                         .then((granPremios) => {
                         database_1.db.desconectarBD()
-                            .then(() => resolve(granPremios))
-                            .catch((error) => reject(`Error desconectando de ${database_1.db._cadenaConexion}: ${error}`));
-                    })
-                        .catch((error) => reject(`Error consultando a ${database_1.db._cadenaConexion}: ${error}`));
+                            .then(() => resolve(granPremios));
+                        //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                    });
+                    //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
                 }))
                     .catch((error) => reject(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             }));
@@ -100,10 +100,10 @@ class Routes {
                     reparacioneSchema_1.Reparaciones.find({})
                         .then((reparaciones) => {
                         database_1.db.desconectarBD()
-                            .then(() => resolve(reparaciones))
-                            .catch((error) => reject(`Error desconectando de ${database_1.db._cadenaConexion}: ${error}`));
-                    })
-                        .catch((error) => reject(`Error consultando a ${database_1.db._cadenaConexion}: ${error}`));
+                            .then(() => resolve(reparaciones));
+                        //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                    });
+                    //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
                 }))
                     .catch((error) => reject(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             }));
@@ -164,10 +164,10 @@ class Routes {
                     ])
                         .then((escuderia) => {
                         database_1.db.desconectarBD()
-                            .then(() => resolve(escuderia))
-                            .catch((error) => reject(`Error desconectando de ${database_1.db._cadenaConexion}: ${error}`));
-                    })
-                        .catch((error) => reject(`Error consultando a ${database_1.db._cadenaConexion}: ${error}`));
+                            .then(() => resolve(escuderia));
+                        //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                    });
+                    //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
                 }))
                     .catch((error) => reject(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             }));
@@ -179,7 +179,7 @@ class Routes {
             yield database_1.db.conectarBD()
                 .then(() => __awaiter(this, void 0, void 0, function* () {
                 let arrayResultado = [];
-                let query = yield personalSchema_1.Personal.find({});
+                let query = yield personalSchema_1.Personal.find({ _idEscuderia: req.params.idEscuderia });
                 console.log(query);
                 let dPersonal;
                 let tmpPersonal;
@@ -219,6 +219,37 @@ class Routes {
                 res.send(mensaje);
             });
             yield database_1.db.desconectarBD();
+        });
+        this.getPrecioXReparacion = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            yield database_1.db.conectarBD()
+                .then(() => __awaiter(this, void 0, void 0, function* () {
+                let query = yield recambioSchema_1.Recambios.aggregate([
+                    { $match: { _idReparacion: req.params.idReparacion } },
+                    {
+                        $lookup: {
+                            localField: "_idPieza",
+                            from: "reparaciones",
+                            foreignField: "_idPieza",
+                            as: "extended"
+                        }
+                    },
+                    { $unwind: "$extended" },
+                    {
+                        $group: {
+                            _id: { _idPieza: "$_idPieza",
+                                _idEscuderia: "$_idEscuderia" },
+                            precio: {
+                                $sum: { $multiply: ["$_precio", "$extended._cantidad"] }
+                            }
+                        }
+                    }
+                ])
+                    .then((precioXReparacion) => {
+                    database_1.db.desconectarBD()
+                        .then(() => res.json(precioXReparacion));
+                });
+            }))
+                .catch((error) => res.send(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
         });
         this.getPuntos = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const promise = new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
@@ -268,10 +299,10 @@ class Routes {
                     ])
                         .then((puntos) => {
                         database_1.db.desconectarBD()
-                            .then(() => resolve(puntos))
-                            .catch((error) => reject(`Error desconectando de ${database_1.db._cadenaConexion}: ${error}`));
-                    })
-                        .catch((error) => reject(`Error consultando a ${database_1.db._cadenaConexion}: ${error}`));
+                            .then(() => resolve(puntos));
+                        //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                    });
+                    //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
                 }))
                     .catch((error) => reject(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             }));
@@ -644,10 +675,10 @@ class Routes {
                     personalSchema_1.Personal.find({ _idEscuderia: req.params.idEscuderia })
                         .then((personal) => {
                         database_1.db.desconectarBD()
-                            .then(() => resolve(personal))
-                            .catch((error) => reject(`Error desconectando de ${database_1.db._cadenaConexion}: ${error}`));
-                    })
-                        .catch((error) => reject(`Error consultando a ${database_1.db._cadenaConexion}: ${error}`));
+                            .then(() => resolve(personal));
+                        //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                    });
+                    //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
                 }))
                     .catch((error) => reject(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             }));
@@ -661,10 +692,10 @@ class Routes {
                     equipoSchema_1.Equipos.find({ _idEscuderia: req.params.idEscuderia })
                         .then((equipo) => {
                         database_1.db.desconectarBD()
-                            .then(() => resolve(equipo))
-                            .catch((error) => reject(`Error desconectando de ${database_1.db._cadenaConexion}: ${error}`));
-                    })
-                        .catch((error) => reject(`Error consultando a ${database_1.db._cadenaConexion}: ${error}`));
+                            .then(() => resolve(equipo));
+                        //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                    });
+                    //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
                 }))
                     .catch((error) => reject(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             }));
@@ -678,10 +709,10 @@ class Routes {
                     reparacioneSchema_1.Reparaciones.find({ _idReparacion: req.params.idReparacion })
                         .then((reparacion) => {
                         database_1.db.desconectarBD()
-                            .then(() => resolve(reparacion))
-                            .catch((error) => reject(`Error desconectando de ${database_1.db._cadenaConexion}: ${error}`));
-                    })
-                        .catch((error) => reject(`Error consultando a ${database_1.db._cadenaConexion}: ${error}`));
+                            .then(() => resolve(reparacion));
+                        //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
+                    });
+                    //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
                 }))
                     .catch((error) => reject(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             }));
@@ -928,22 +959,47 @@ class Routes {
             let fecha = new Date();
             const { idReparacion } = req.params;
             console.log(idReparacion);
-            console.log(req.body);
+            const { _idReparacion, _idIngeniero, _idPieza, _idCoche, _cantidad, _estado } = req.body;
+            console.log(_estado);
             yield database_1.db.conectarBD();
-            yield reparacioneSchema_1.Reparaciones.findOneAndUpdate({ _idReparacion: idReparacion }, {
-                //_idReparacion: req.body._idReparacion,
-                //_idCoche: req.body._idCoche,
-                //_idIngeniero: req.body._idIngeniero,
-                //_idPieza: req.body._idPieza,
-                _fecha: fecha,
-                //_cantidad: req.body._cantidad,
-                _estado: req.body._estado
-            }, {
-                new: true,
-                runValidators: true
-            })
-                .then((doc) => res.send(doc))
-                .catch((err) => res.send('Error: ' + err));
+            if (_estado == 'Cancelado') {
+                yield reparacioneSchema_1.Reparaciones.findOneAndUpdate({ _idReparacion: idReparacion }, {
+                    _cantidad: _cantidad,
+                    _estado: _estado,
+                    _fechaCancelacion: fecha
+                }, {
+                    new: true,
+                    runValidators: true
+                });
+                //console.log(_cantidad)
+                let query = yield recambioSchema_1.Recambios.find({ _idPieza: _idPieza });
+                let cantidad = query[0]._cantidadTotal;
+                //console.log(cantidad)
+                let nuevaCantidad = cantidad + _cantidad;
+                //console.log(nuevaCantidad)
+                yield recambioSchema_1.Recambios.findOneAndUpdate({ _idPieza: _idPieza }, { _cantidadTotal: nuevaCantidad }, {
+                    new: true,
+                    runValidators: true
+                })
+                    .then((doc) => res.send(doc))
+                    .catch((err) => res.send('Error: ' + err));
+            }
+            else {
+                yield reparacioneSchema_1.Reparaciones.findOneAndUpdate({ _idReparacion: idReparacion }, {
+                    //_idReparacion: req.body._idReparacion,
+                    //_idCoche: req.body._idCoche,
+                    //_idIngeniero: req.body._idIngeniero,
+                    //_idPieza: req.body._idPieza,
+                    _fecha: fecha,
+                    //_cantidad: req.body._cantidad,
+                    _estado: _estado
+                }, {
+                    new: true,
+                    runValidators: true
+                })
+                    .then((doc) => res.send(doc))
+                    .catch((err) => res.send('Error: ' + err));
+            }
             yield database_1.db.desconectarBD();
         });
         //eliminar un empleado de la coleccion personal mediante el metodo delete en la ruta /personal/:idPersonal
@@ -961,6 +1017,16 @@ class Routes {
             yield database_1.db.conectarBD()
                 .then(() => __awaiter(this, void 0, void 0, function* () {
                 equipoSchema_1.Equipos.findOneAndDelete({ _idEscuderia: req.params.idEscuderia })
+                    .then((mensaje) => res.send(`El documento se ha eliminado correctamente en la base de datos ${mensaje}`))
+                    .catch((error) => res.send(`Ha habido un error en la eliminación del documento a ${database_1.db._cadenaConexion}: ${error}`));
+            }))
+                .catch((error) => res.send(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
+            yield database_1.db.conectarBD();
+        });
+        this.deletePieza = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            yield database_1.db.conectarBD()
+                .then(() => __awaiter(this, void 0, void 0, function* () {
+                recambioSchema_1.Recambios.findOneAndDelete({ _idPieza: req.params.idPieza })
                     .then((mensaje) => res.send(`El documento se ha eliminado correctamente en la base de datos ${mensaje}`))
                     .catch((error) => res.send(`Ha habido un error en la eliminación del documento a ${database_1.db._cadenaConexion}: ${error}`));
             }))
@@ -1022,7 +1088,6 @@ class Routes {
                             let borrado = yield reparacioneSchema_1.Reparaciones.findOneAndDelete({ _idReparacion: dSchema._idReparacion });
                             console.log(dSchema._idReparacion);
                             if (borrado) {
-                                let x = 1;
                                 console.log("borrado");
                                 res.send("borrado");
                             }
@@ -1034,7 +1099,6 @@ class Routes {
                             let options = { returnNewDocument: true };
                             let actualizar = yield recambioSchema_1.Recambios.findOneAndUpdate(search, update, options);
                             if (actualizar) {
-                                let x = 2;
                                 console.log("actualizado");
                                 res.send("actualizado");
                             }
@@ -1056,16 +1120,17 @@ class Routes {
     misRutas() {
         this._router.get('/equipos', this.getEquipos);
         this._router.get('/personal/:idEscuderia', this.getPersonalEscuderia);
-        this._router.get('/equipos/:idEscuderia', this.getEquipoId);
+        this._router.get('/equipo/:idEscuderia', this.getEquipoId);
         this._router.get('/recambios', this.getRecambios);
         this._router.get('/reparacion/:idReparacion', this.getReparacionId);
         this._router.get('/vehiculos', this.getVehiculos);
         this._router.get('/granPremios', this.getGranPremios);
         this._router.get('/reparaciones', this.getReparaciones);
+        this._router.get('/precioRecambios/:idPieza', this.getPrecioXReparacion);
         this._router.get('/puntos', this.getPuntos);
         this._router.get('/getPuntosPilotos', this.getPuntosPilotos);
         this._router.get('/escuderia', this.getEscuderia);
-        this._router.get('/salario', this.getSalarios);
+        this._router.get('/salarios/:idEscuderia', this.getSalarios);
         this._router.post('/equipo', this.postEquipo);
         this._router.post('/reparacion', this.postReparacion);
         this._router.post('/monoplaza', this.postMonoplaza); //para la subclases de vehiculos
@@ -1076,17 +1141,15 @@ class Routes {
         this._router.post('/personal/mecanico', this.postMecanico);
         this._router.post('/granPremio', this.postGranPremio); //funciona
         this._router.post('/boxes', this.postBox);
-        this._router.put('/recambio/:idPieza', this.updateRecambio);
+        this._router.put('/recambio/:idPieza', this.updateRecambio); //perfect
         this._router.put('/reparacion/:idReparacion', this.updateReparacion);
         this._router.put('/equipo/:idEscuderia', this.updateEquipo);
         this.router.put('/reparacionGorda', this.updateReparacionGorda);
         this._router.delete('/personal/:idPersonal', this.deletePersonal);
         this._router.delete('/equipo/:idEscuderia', this.deleteEscuderia);
+        this._router.delete('/recambio/:idPieza', this.deletePieza);
     }
 }
 const obj = new Routes();
 obj.misRutas();
 exports.routes = obj.router;
-function toISOString() {
-    throw new Error('Function not implemented.');
-}
