@@ -5,7 +5,6 @@ const mongoose_1 = require("mongoose");
 const equipoSchema = new mongoose_1.Schema({
     _idEscuderia: {
         type: String,
-        //required: true
     },
     _nombre: {
         type: String,

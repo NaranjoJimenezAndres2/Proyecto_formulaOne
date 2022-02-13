@@ -14,6 +14,22 @@ db.granpremios.insertMany([
 "_clasificacion":[{"ALO" : 25},{"VER" :18 },{"HAM" : 15},{"PER" : 10},{"SAI" : 8},{"LEC" :6 },{"OCO" : 5},{"RUS" : 3},{"GAS" : 2},{"VET" : 1}],
 "_vueltaRapida": {"HAM": 1}, 
 "_abandonos": [{"KIM": 1},{"GER":1}]
+},
+{"_idGranPremio": "003", 
+"_nombre" : "Montmelo", 
+"_temporada": 2021,
+"_pais": "España",
+"_clasificacion":[{"HAM" : 25},{"VER" :18 },{"BOT" : 15},{"PER" : 10},{"NOR" : 8},{"GAS" :6 },{"OCO" : 5},{"RIC" : 3},{"LEC" : 2},{"VET" : 1}],
+"_vueltaRapida": {"ALO": 1}, 
+"_abandonos": [{"KIM": 1},{"GER":1}]
+},
+{"_idGranPremio": "004", 
+"_nombre" : "GP Indianapolis", 
+"_temporada": 2021,
+"_pais": "Brasil",
+"_clasificacion":[{"VER" : 25},{"HAM" :18 },{"ALO" : 15},{"PER" : 10},{"STR" : 8},{"LEC" :6 },{"OCO" : 5},{"RUS" : 3},{"GAS" : 2},{"VET" : 1}],
+"_vueltaRapida": {"HAM": 1}, 
+"_abandonos": [{"KIM": 1},{"GER":1}]
 }
 
 ]);
@@ -26,7 +42,9 @@ db.personals.insertMany([
     "_salario":50000,
     "_idEscuderia":"ALP",
     "_idPiloto":"OCO",
-   "_nacionalidad":"FRA"},
+   "_nacionalidad":"FRA",
+   "_adelantamientos": 9,
+   "_abandonos": 0},
 
     {"_idPersonal": "aaa",
     "_nombre":"Max",
@@ -35,7 +53,9 @@ db.personals.insertMany([
     "_salario":60000,
     "_idEscuderia":"RBR",
     "_idPiloto":"VER",
-   "_nacionalidad":"NLD"
+   "_nacionalidad":"NLD",
+   "_adelantamientos": 10,
+    "_abandonos": 2
 
     },
     {"_idPersonal": "aaa",
@@ -45,7 +65,9 @@ db.personals.insertMany([
     "_salario":55000,
     "_idEscuderia":"MER",
     "_idPiloto":"HAM",
-   "_nacionalidad":"ENG"
+   "_nacionalidad":"ENG",
+   "_adelantamientos": 8,
+   "_abandonos": 1
 
     },
 
@@ -56,7 +78,9 @@ db.personals.insertMany([
     "_salario":45000,
     "_idEscuderia":"RBR",
     "_idPiloto":"PER",
-   "_nacionalidad":"MEX"
+   "_nacionalidad":"MEX",
+   "_adelantamientos": 14,
+   "_abandonos": 0
 
     },
 
@@ -67,7 +91,9 @@ db.personals.insertMany([
     "_salario":55000,
     "_idEscuderia":"MCL",
     "_idPiloto":"NOR",
-   "_nacionalidad":"ENG"
+   "_nacionalidad":"ENG",
+   "_adelantamientos": 5,
+   "_abandonos": 1
 
     },
 
@@ -78,7 +104,9 @@ db.personals.insertMany([
     "_salario":55000,
     "_idEscuderia":"FER",
     "_idPiloto":"LEC",
-   "_nacionalidad":"MON"
+   "_nacionalidad":"MON",
+   "_adelantamientos": 20,
+   "_abandonos": 0
 
     },
 
@@ -89,7 +117,9 @@ db.personals.insertMany([
     "_salario":55000,
     "_idEscuderia":"MCL",
     "_idPiloto":"RIC",
-   "_nacionalidad":"AUS"
+   "_nacionalidad":"AUS",
+   "_adelantamientos": 13,
+   "_abandonos": 3
 
     },
 
@@ -100,7 +130,9 @@ db.personals.insertMany([
     "_salario":55000,
     "_idEscuderia":"TAU",
     "_idPiloto":"GAS",
-    "_nacionalidad":"FRA"},
+    "_nacionalidad":"FRA",
+    "_adelantamientos": 6,
+    "_abandonos": 0},
 
     {"_idPersonal": "aaa",
     "_nombre":"George",
@@ -109,7 +141,9 @@ db.personals.insertMany([
     "_salario":55000,
     "_idEscuderia":"WIL",
     "_idPiloto":"RUS",
-    "_nacionalidad":"ENG"},
+    "_nacionalidad":"ENG",
+    "_adelantamientos": 16,
+    "_abandonos": 1},
 
     {"_idPersonal": "aaa",
     "_nombre":"Carlos",
@@ -118,7 +152,9 @@ db.personals.insertMany([
     "_salario":55000,
     "_idEscuderia":"FER",
     "_idPiloto":"SAI",
-    "_nacionalidad":"ESP"},
+    "_nacionalidad":"ESP",
+    "_adelantamientos": 13,
+    "_abandonos": 0},
 
     {"_idPersonal": "aaa",
     "_nombre":"Fernando",
@@ -127,7 +163,9 @@ db.personals.insertMany([
     "_salario":55000,
     "_idEscuderia":"ALP",
     "_idPiloto":"ALO",
-    "_nacionalidad":"ESP"},
+    "_nacionalidad":"ESP",
+    "_adelantamientos": 8,
+    "_abandonos": 1},
 
     {"_idPersonal": "aaa",
     "_nombre":"Sebastian",
@@ -136,7 +174,70 @@ db.personals.insertMany([
     "_salario":55000,
     "_idEscuderia":"AST",
     "_idPiloto":"VET",
-    "_nacionalidad":"GER"},
+    "_nacionalidad":"GER",
+    "_adelantamientos": 15,
+    "_abandonos": 3},
+    
+    {"_idPersonal": "vvv",
+    "_nombre":"Lance",
+    "_apellidos":"Stroll",
+    "_fechaContratacion": new Date ("2021-05-09"),
+    "_salario":55000,
+    "_idEscuderia":"AST",
+    "_idPiloto":"STR",
+    "_nacionalidad":"CAN",
+    "_adelantamientos": 20,
+    "_abandonos": 0},
+
+    {"_idPersonal": "vvv",
+    "_nombre":"Valtteri",
+    "_apellidos":"Bottas",
+    "_fechaContratacion": new Date ("2021-05-09"),
+    "_salario":48000,
+    "_idEscuderia":"MER",
+    "_idPiloto":"BOT",
+    "_nacionalidad":"FIN",
+    "_adelantamientos": 6,
+    "_abandonos": 1},
+
+    {"_idPersonal": "xxx", 
+    "_nombre" : "Alex", 
+    "_apellidos": "Perez",
+    "_fechaContratacion": new Date ("2021-05-09"),
+    "_salario":23000, 
+    "_idEscuderia": "ALP", 
+    "_idMecanico": "xx2",
+    "_posicion": "delantera",
+    "_paleta": true},
+    
+    {"_idPersonal": "xxx2",
+    "_nombre" : "Juan",
+    "_apellidos": "Perez",
+    "_fechaContratacion": new Date ("2021-05-09"),
+    "_salario":23000,
+    "_idEscuderia": "ALP",
+    "_idIngeniero": "xx2",
+    "_especialidad": "delantera",
+    "_horasNocturnas": 8},
+
+    {"_idPersonal": "ggg", 
+    "_nombre" : "Miguel", 
+    "_apellidos": "Perez",
+    "_fechaContratacion": new Date ("2021-05-09"),
+    "_salario":23000, 
+    "_idEscuderia": "MER", 
+    "_idMecanico": "xdf",
+    "_posicion": "delantera"},
+    
+    {"_idPersonal": "xgg",
+    "_nombre" : "Juan",
+    "_apellidos": "Perez",
+    "_fechaContratacion": new Date ("2021-05-09"),
+    "_salario":23000,
+    "_idEscuderia": "MER",
+    "_idIngeniero": "bbb",
+    "_especialidad": "delantera",
+    "_horasNocturnas": 15},
 
 
 

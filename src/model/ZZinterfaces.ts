@@ -46,6 +46,18 @@ export interface iPuntosPilotos  {
     _puntosTotales: number | null
 }
 
+
+export interface iDetallePilotos  {
+    _idPiloto: string | null,
+    _nombre: string | null,
+    _apellidos: string | null,
+    _fechaContratacion: Date | null,
+    _puntosTotales: number | null,
+    _abandonos: number | null,
+    _adelantamientos: number | null,
+}
+
+
 export interface xClasificacion {
     _temporada: string | null;
     _puntosALO: number | null;

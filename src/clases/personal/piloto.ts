@@ -59,17 +59,8 @@ export class Piloto extends Empleado {
     
     salarioTotal(): number {
         let salario: number = super.salarioTotal();
-        if (this._vueltasRapidas > 5) {
-            salario += 1000;
-        }
-        if (this._adelantamientos > 20) {
-            salario += 1000;
-        }
-        if (this._abandonos < 10) {
-            salario += 1000;
-        }
-        if (this._puntosTotales > 20) {
-            salario += (1000 * (this._puntosTotales-20));
+        if (this._adelantamientos >10){
+            salario += this._adelantamientos * 100;
         }
         return salario;
     }

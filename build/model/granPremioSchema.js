@@ -11,7 +11,7 @@ const granPremioSchema = new mongoose_1.Schema({
         type: String,
     },
     _temporada: {
-        type: String,
+        type: Number,
     },
     _pais: {
         type: String,

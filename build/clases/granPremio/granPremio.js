@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.granPremio = void 0;
 class granPremio {
-    constructor(idGranPremio, nombre, fecha, pais, clasificacion, vueltaRapida, abandonos) {
+    constructor(idGranPremio, nombre, temporada, pais, clasificacion, vueltaRapida, abandonos) {
         this._idGranPremio = idGranPremio;
         this._nombre = nombre;
-        this._fecha = fecha;
+        this._temporada = temporada;
         this._pais = pais;
         this._clasificacion = clasificacion;
         this._vueltaRapida = vueltaRapida;
@@ -17,8 +17,8 @@ class granPremio {
     get nombre() {
         return this._nombre;
     }
-    get fecha() {
-        return this._fecha;
+    get temporada() {
+        return this._temporada;
     }
     get pais() {
         return this._pais;

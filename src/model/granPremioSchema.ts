@@ -9,7 +9,7 @@ const granPremioSchema = new Schema({
         type: String,
     },
     _temporada: {
-        type: String,
+        type: Number,
     },
     _pais: {
         type: String,
@@ -27,7 +27,7 @@ const granPremioSchema = new Schema({
 export type iGranPremio = {
     _idGranPremio: string,
     _nombre: string,
-    _temporada: string,
+    _temporada: number,
     _pais: string,
     _clasificacion:[{}],
     _vueltaRapida: {

@@ -3,7 +3,7 @@ import {Schema, model } from 'mongoose';
 const equipoSchema = new Schema({
     _idEscuderia: {
         type: String,
-        //required: true
+        
     },
     _nombre: {
         type: String,

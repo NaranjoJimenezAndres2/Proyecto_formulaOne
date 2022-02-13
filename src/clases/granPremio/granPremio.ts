@@ -1,16 +1,16 @@
 export class granPremio {
     private _idGranPremio: string;
     private _nombre: string;
-    private _fecha: Date;
+    private _temporada: number;
     private _pais: string;
     private _clasificacion: Array<string>;
     private _vueltaRapida: Array<string>;
     private _abandonos: Array<string>;
 
-    constructor(idGranPremio: string, nombre: string, fecha: Date, pais: string, clasificacion: Array<string>, vueltaRapida: Array<string>, abandonos: Array<string>) {
+    constructor(idGranPremio: string, nombre: string, temporada: number, pais: string, clasificacion: Array<string>, vueltaRapida: Array<string>, abandonos: Array<string>) {
         this._idGranPremio = idGranPremio;
         this._nombre = nombre;
-        this._fecha = fecha;
+        this._temporada = temporada;
         this._pais = pais;
         this._clasificacion = clasificacion;
         this._vueltaRapida = vueltaRapida;
@@ -25,8 +25,8 @@ export class granPremio {
         return this._nombre;
     }
 
-    public get fecha(): Date {
-        return this._fecha;
+    public get temporada(): number {
+        return this._temporada;
     }
 
     public get pais(): string {
