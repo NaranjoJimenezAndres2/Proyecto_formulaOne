@@ -747,6 +747,16 @@ class Routes {
                 .catch((error) => res.send(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             yield database_1.db.conectarBD();
         });
+        this.deleteReparacion = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            yield database_1.db.conectarBD()
+                .then(() => __awaiter(this, void 0, void 0, function* () {
+                reparacioneSchema_1.Reparaciones.findOneAndDelete({ _idReparacion: req.params.idReparacion })
+                    .then((mensaje) => res.send(`El documento se ha eliminado correctamente en la base de datos ${mensaje}`))
+                    .catch((error) => res.send(`Ha habido un error en la eliminación del documento a ${database_1.db._cadenaConexion}: ${error}`));
+            }))
+                .catch((error) => res.send(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
+            yield database_1.db.conectarBD();
+        });
         //******************************************************************************************************************************* */
         //realizar un post de un documento en la coleccion reparaciones comparando con la cantidad disponible en la coleccion recambios
         this.updateReparacionGorda = (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -1029,6 +1039,7 @@ class Routes {
         this._router.delete('/personal/:idPersonal', this.deletePersonal);
         this._router.delete('/equipo/:idEscuderia', this.deleteEscuderia); // Se usa en Angular
         this._router.delete('/recambio/:idPieza', this.deletePieza); // Se usa en Angular
+        this._router.delete('/reparacion/:idReparacion', this.deleteReparacion); // Se usa en Angular
     }
 }
 const obj = new Routes();

@@ -963,6 +963,18 @@ class Routes {
         await db.conectarBD()
     }
 
+    private deleteReparacion = async (req: Request, res: Response) => {
+        await db.conectarBD()
+            .then(async () => {
+                Reparaciones.findOneAndDelete({ _idReparacion: req.params.idReparacion })
+                    .then((mensaje) => res.send(`El documento se ha eliminado correctamente en la base de datos ${mensaje}`))
+                    .catch((error) => res.send(`Ha habido un error en la eliminación del documento a ${db._cadenaConexion}: ${error}`))
+            })
+            .catch((error) => res.send(`Error conectando a ${db._cadenaConexion}: ${error}`))
+        await db.conectarBD()
+    }
+    
+
 
     //******************************************************************************************************************************* */
 
@@ -1319,6 +1331,7 @@ class Routes {
         this._router.delete('/personal/:idPersonal', this.deletePersonal)
         this._router.delete('/equipo/:idEscuderia', this.deleteEscuderia) // Se usa en Angular
         this._router.delete('/recambio/:idPieza', this.deletePieza) // Se usa en Angular
+        this._router.delete('/reparacion/:idReparacion', this.deleteReparacion) // Se usa en Angular
 
     }
 
