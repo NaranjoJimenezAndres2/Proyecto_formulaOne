@@ -30,10 +30,7 @@ class Routes {
                 yield database_1.db.conectarBD()
                     .then(() => __awaiter(this, void 0, void 0, function* () {
                     equipoSchema_1.Equipos.find({})
-                        .then((equipos) => resolve(equipos)
-                    //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
-                    );
-                    //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
+                        .then((equipos) => resolve(equipos));
                 }))
                     .catch((error) => reject(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             }));
@@ -48,9 +45,7 @@ class Routes {
                         .then((vehiculos) => {
                         database_1.db.desconectarBD()
                             .then(() => resolve(vehiculos));
-                        //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
                     });
-                    //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
                 }))
                     .catch((error) => reject(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             }));
@@ -62,10 +57,7 @@ class Routes {
                 yield database_1.db.conectarBD()
                     .then(() => __awaiter(this, void 0, void 0, function* () {
                     recambioSchema_1.Recambios.find({})
-                        .then((recambios) => resolve(recambios)
-                    //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
-                    );
-                    //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
+                        .then((recambios) => resolve(recambios));
                 }))
                     .catch((error) => reject(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             }));
@@ -92,45 +84,13 @@ class Routes {
                 yield database_1.db.conectarBD()
                     .then(() => __awaiter(this, void 0, void 0, function* () {
                     reparacioneSchema_1.Reparaciones.find({})
-                        .then((reparaciones) => resolve(reparaciones)
-                    //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
-                    );
-                    //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
+                        .then((reparaciones) => resolve(reparaciones));
                 }))
                     .catch((error) => reject(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             }));
             res.json(yield promise);
             database_1.db.desconectarBD();
         });
-        /*
-            private getEscuderia = async (req: Request, res: Response) => {
-                const promise = new Promise<any>( async (resolve, reject) => {
-                    await db.conectarBD()
-                    .then( async () => {
-                        Equipos.aggregate([
-                            {
-                                $lookup: {
-                                localField: "_nombre",
-                                from: "vehiculos",
-                                foreignField: "_marca",
-                                as: "pilotos"
-                                }
-                            },
-                            {$unwind: "$pilotos"}
-                        ])
-                        .then( (escuderia) => {
-                            db.desconectarBD()
-                            .then( () => resolve(escuderia) )
-                            .catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
-                        })
-                        .catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
-                    })
-                    .catch( (error) => reject(`Error conectando a ${db._cadenaConexion}: ${error}`) )
-                })
-                res.json(await promise)
-                db.desconectarBD()
-            }
-            */
         this.getEscuderia = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const promise = new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
                 yield database_1.db.conectarBD()
@@ -157,9 +117,7 @@ class Routes {
                         .then((escuderia) => {
                         database_1.db.desconectarBD()
                             .then(() => resolve(escuderia));
-                        //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
                     });
-                    //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
                 }))
                     .catch((error) => reject(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             }));
@@ -291,204 +249,13 @@ class Routes {
                         .then((puntos) => {
                         database_1.db.desconectarBD()
                             .then(() => resolve(puntos));
-                        //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
                     });
-                    //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
                 }))
                     .catch((error) => reject(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             }));
             res.json(yield promise);
             database_1.db.desconectarBD();
         });
-        //introducir los datos puntos de la coleccion granpremios en cada campo _puntosTotales de la clase piloto depenidendo de su _idPiloto
-        /*
-                private getPuntosPilotos1 = async (req: Request, res: Response) => {
-                    await db.conectarBD()
-                            .then( async () => {
-                                let dPuntosPilotos : iPuntosPilotos= {
-                                    _idPiloto: null,
-                                    _nombre: null,
-                                    _apellidos: null,
-                                    _fechaContratacion: null,
-                                    _puntosTotales: null
-                                }
-        
-                                let arrayResultado : Array<iPuntosPilotos> = []
-        
-        
-        
-                                let query: any =  await Personal.find({})
-        
-                                //console.log(query)
-        
-                                let dPersonal: xPersonal
-                                let tmpPersonal : Piloto
-        
-                                for (dPersonal of  query){
-                                    if (dPersonal._idPiloto){
-                                        tmpPersonal = new Piloto (dPersonal._idPiloto, dPersonal._nacionalidad, dPersonal._vueltasRapidas, dPersonal._adelantamientos, dPersonal._abandonos, dPersonal._puntosTotales, dPersonal._idPersonal, dPersonal._nombre, dPersonal._apellidos, dPersonal._fechaContratacion, dPersonal._salario,dPersonal._idEscuderia)
-                                    
-                                        let query2 : any = await granPremios.aggregate([
-                                            {
-                                                $match: {"_temporada": "2021"}
-                                            }
-                                        
-                                            ,
-                                            {
-                                                $unwind: "$_clasificacion"
-                                            },
-                                            {
-                                                $group: {
-                                                    _id: {temporada : "$_temporada"},//error absurdo, funciona bien
-                                                    puntosALO: {$sum: "$_clasificacion.ALO"},
-                                                    puntosVER: {$sum: "$_clasificacion.VER"},
-                                                    puntosHAM: {$sum: "$_clasificacion.HAM"},
-                                                    puntosPER: {$sum: "$_clasificacion.PER"},
-                                                    puntosNOR: {$sum: "$_clasificacion.NOR"},
-                                                    puntosLEC: {$sum: "$_clasificacion.LEC"},
-                                                    puntosOCO: {$sum: "$_clasificacion.OCO"},
-                                                    puntosRIC: {$sum: "$_clasificacion.RIC"},
-                                                    puntosGAS: {$sum: "$_clasificacion.GAS"},
-                                                    puntosVET: {$sum: "$_clasificacion.VET"},
-                                                    puntosSAI: {$sum: "$_clasificacion.SAI"},
-                                                    puntosRUS: {$sum: "$_clasificacion.RUS"},
-        
-                                                    
-                                                    
-                                                }
-                                            },{
-                                               
-                                                    $project: {
-                                                        _id: 0,
-                                                        temporada:"$_id.temporada",
-                                                        puntosALO: "$puntosALO",
-                                                        puntosVER: "$puntosVER",
-                                                        puntosHAM: "$puntosHAM",
-                                                        puntosPER: "$puntosPER",
-                                                        puntosNOR: "$puntosNOR",
-                                                        puntosLEC: "$puntosLEC",
-                                                        puntosOCO: "$puntosOCO",
-                                                        puntosRIC: "$puntosRIC",
-                                                        puntosGAS: "$puntosGAS",
-                                                        puntosVET: "$puntosVET",
-                                                        puntosSAI: "$puntosSAI",
-                                                        puntosRUS: "$puntosRUS",
-        
-                                                }
-                                            }
-                                        ])
-                                        //console.log(query2)
-        
-                                        let dSchema :any = {
-                                            temporada: null,
-                                            puntosALO: null,
-                                            puntosVER: null,
-                                            puntosHAM: null,
-                                            puntosPER: null,
-                                            puntosNOR: null,
-                                            puntosLEC: null,
-                                            puntosOCO: null,
-                                            puntosRIC: null,
-                                            puntosGAS: null,
-                                            puntosVET: null,
-                                            puntosSAI: null,
-                                            puntosRUS: null,
-                                            
-                                        }
-        
-                                        dSchema.temporada = query2[0].temporada
-                                        dSchema.puntosALO = query2[0].puntosALO
-                                        dSchema.puntosVER = query2[0].puntosVER
-                                        dSchema.puntosHAM = query2[0].puntosHAM
-                                        dSchema.puntosPER = query2[0].puntosPER
-                                        dSchema.puntosNOR = query2[0].puntosNOR
-                                        dSchema.puntosLEC = query2[0].puntosLEC
-                                        dSchema.puntosOCO = query2[0].puntosOCO
-                                        dSchema.puntosRIC = query2[0].puntosRIC
-                                        dSchema.puntosGAS = query2[0].puntosGAS
-                                        dSchema.puntosVET = query2[0].puntosVET
-                                        dSchema.puntosSAI = query2[0].puntosSAI
-                                        dSchema.puntosRUS = query2[0].puntosRUS
-        
-        
-                                        //console.log(dSchema)
-        
-        //modificar los puntos totales de los pilotos
-        
-                                        if (dPersonal._idPiloto == "ALO"){
-                                            tmpPersonal.setPuntosTotales(dSchema.puntosALO)
-                                        }
-                                        else if (dPersonal._idPiloto == "VER"){
-                                            tmpPersonal.setPuntosTotales(dSchema.puntosVER)
-                                        }
-                                        else if (dPersonal._idPiloto == "HAM"){
-                                            tmpPersonal.setPuntosTotales(dSchema.puntosHAM)
-                                        }
-                                        else if (dPersonal._idPiloto == "PER"){
-                                            tmpPersonal.setPuntosTotales(dSchema.puntosPER)
-                                        }
-                                        else if (dPersonal._idPiloto == "NOR"){
-                                            tmpPersonal.setPuntosTotales(dSchema.puntosNOR)
-                                        }
-                                        else if (dPersonal._idPiloto == "LEC"){
-                                            tmpPersonal.setPuntosTotales(dSchema.puntosLEC)
-                                        }
-                                        else if (dPersonal._idPiloto == "OCO"){
-                                            tmpPersonal.setPuntosTotales(dSchema.puntosOCO)
-                                        }
-                                        else if (dPersonal._idPiloto == "RIC"){
-                                            tmpPersonal.setPuntosTotales(dSchema.puntosRIC)
-                                        }
-                                        else if (dPersonal._idPiloto == "GAS"){
-                                            tmpPersonal.setPuntosTotales(dSchema.puntosGAS)
-                                        }
-                                        else if (dPersonal._idPiloto == "VET"){
-                                            tmpPersonal.setPuntosTotales(dSchema.puntosVET)
-                                        }
-                                        else if (dPersonal._idPiloto == "SAI"){
-                                            tmpPersonal.setPuntosTotales(dSchema.puntosSAI)
-                                        }
-                                        else if (dPersonal._idPiloto == "RUS"){
-                                            tmpPersonal.setPuntosTotales(dSchema.puntosRUS)
-                                        }
-                                        else{
-                                            tmpPersonal.setPuntosTotales(0)
-                                        }
-        
-        
-                                        dPuntosPilotos._idPiloto = dPersonal._idPiloto,
-                                        dPuntosPilotos._nombre = dPersonal._nombre,
-                                        dPuntosPilotos._apellidos = dPersonal._apellidos,
-                                        dPuntosPilotos._fechaContratacion = dPersonal._fechaContratacion,
-                                        dPuntosPilotos._puntosTotales = tmpPersonal._puntosTotales
-        
-                                    
-        
-                                        //console.log(dPuntosPilotos)
-                                        
-                                        //console.log(arrayResultado)
-                                        
-        
-        
-        arrayResultado.push(dPuntosPilotos)
-                                }
-                                //console.log(dPuntosPilotos)
-                                        
-                                
-                            }
-                            
-                            console.log(arrayResultado)
-        
-                            res.json(arrayResultado)
-                        })
-                        .catch((mensaje) => {
-                            res.send(mensaje)
-                        })
-                        await db.desconectarBD()
-                    }
-        
-        
-        */
         this.getPuntosPilotos = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD()
                 .then(() => __awaiter(this, void 0, void 0, function* () {
@@ -639,11 +406,8 @@ class Routes {
                             dPuntosPilotos._apellidos = dPersonal._apellidos,
                             dPuntosPilotos._fechaContratacion = dPersonal._fechaContratacion,
                             dPuntosPilotos._puntosTotales = tmpPersonal._puntosTotales;
-                        //console.log(dPuntosPilotos)
-                        //console.log(arrayResultado)
                         arrayResultado.push(dPuntosPilotos);
                     }
-                    //console.log(dPuntosPilotos)
                 }
                 console.log(arrayResultado);
                 res.json(arrayResultado);
@@ -653,26 +417,6 @@ class Routes {
             });
             yield database_1.db.desconectarBD();
         });
-        /*
-        
-        *******************************************/
-        /*private getPersonal = async (req: Request, res: Response) => {
-            const promise = new Promise<any>( async (resolve, reject) => {
-                await db.conectarBD()
-                .then( async () => {
-                    Personal.find({})
-                    .then( (personal) => {
-                        db.desconectarBD()
-                        .then( () => resolve(personal) )
-                        .catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
-                    })
-                    .catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
-                })
-                .catch( (error) => reject(`Error conectando a ${db._cadenaConexion}: ${error}`) )
-            })
-            res.json(await promise)
-            db.desconectarBD()
-        }*/
         //obtener mediante metodo get el personal de una escuderia
         this.getPersonalEscuderia = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const promise = new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
@@ -682,9 +426,7 @@ class Routes {
                         .then((personal) => {
                         database_1.db.desconectarBD()
                             .then(() => resolve(personal));
-                        //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
                     });
-                    //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
                 }))
                     .catch((error) => reject(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             }));
@@ -699,9 +441,7 @@ class Routes {
                         .then((equipo) => {
                         database_1.db.desconectarBD()
                             .then(() => resolve(equipo));
-                        //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
                     });
-                    //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
                 }))
                     .catch((error) => reject(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             }));
@@ -716,9 +456,7 @@ class Routes {
                         .then((reparacion) => {
                         database_1.db.desconectarBD()
                             .then(() => resolve(reparacion));
-                        //.catch( (error) => reject(`Error desconectando de ${db._cadenaConexion}: ${error}`) )
                     });
-                    //.catch( (error) => reject(`Error consultando a ${db._cadenaConexion}: ${error}`) )
                 }))
                     .catch((error) => reject(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             }));
@@ -745,16 +483,6 @@ class Routes {
                 .catch((error) => res.send(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             yield database_1.db.conectarBD();
         });
-        /*private postGranPremio = async (req: Request, res: Response) => {
-            await db.conectarBD()
-            .then( async () => {
-                granPremios.create(req.body)
-                .then( (mensaje) => res.send(`El documento se ha introducido correctamente en la base de datos ${mensaje}`) )
-                .catch( (error) => res.send(`Ha habido un error en la subida del documento a ${db._cadenaConexion}: ${error}`)) //si hay alguna limitacion de Schema salta este error
-            })
-            .catch( (error) => res.send(`Error conectando a ${db._cadenaConexion}: ${error}`))
-            await db.conectarBD()
-        }*/
         //introducir un vehiculo del tipo monoplaza dentro de la base de datos mediante el metodo post
         this.postMonoplaza = (req, res) => __awaiter(this, void 0, void 0, function* () {
             let pShemaMonoplaza = new vehiculoSchema_1.Vehiculos({
@@ -898,28 +626,6 @@ class Routes {
                 .catch((error) => res.send(`Error conectando a ${database_1.db._cadenaConexion}: ${error}`));
             yield database_1.db.conectarBD();
         });
-        /*private postBoxes = async (req: Request, res: Response) => {
-    
-            let pShemaBoxes= new Boxes({
-                _idBoxe: req.body._idBoxe,
-                _idgranPremio: req.body._idgranPremio,
-                _idEscuderia: req.body._idEscuderia,
-                _idCoche: req.body._idCoche,
-                _idMecanico: req.body._idMecanico,
-                _tiempo: req.body._tiempo
-            })
-    
-            console.log(pShemaBoxes)
-    
-            await db.conectarBD()
-            .then( async () => {
-                await pShemaBoxes.save()
-                .then( (mensaje:any) => res.send(`El documento se ha introducido correctamente en la base de datos ${mensaje}`))
-                .catch( (error:any) => res.send(`Ha habido un error en la subida del documento a ${db._cadenaConexion}: ${error}`))
-            })
-            .catch( (error:any) => res.send(`Error conectando a ${db._cadenaConexion}: ${error}`))
-            db.desconectarBD()
-        }*/
         //modificar el campo precio de la base de datos mediante el metodo put en la ruta /recambios/:idPieza
         this.updateRecambio = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
@@ -1059,14 +765,6 @@ class Routes {
                 const oSchema = new reparacioneSchema_1.Reparaciones(dSchema);
                 yield oSchema.save()
                     .then(() => {
-                    /* .then( async () => {
-                            Reparaciones.create(req.body)
-                            .then( (mensaje) => res.send(`El documento se ha introducido correctamente en la base de datos ${mensaje}`))
-                            .catch( (error) => res.send(`Ha habido un error en la subida del documento a ${db._cadenaConexion}: ${error}`))//  req.body._idRecambio
-                       /* })
-                        .catch((mensaje) => {
-                            res.send(mensaje)
-                        })*/
                     database_1.db.conectarBD()
                         .then(() => __awaiter(this, void 0, void 0, function* () {
                         let query = yield recambioSchema_1.Recambios.aggregate([
@@ -1081,7 +779,6 @@ class Routes {
                                     as: "extended"
                                 }
                             }
-                            // ,{$unwind: "$extended"},
                         ]);
                         console.log(query);
                         let dReparaciones;
@@ -1301,37 +998,37 @@ class Routes {
     }
     /*********************************************************************************************************** ESTO ES BOMBA */
     misRutas() {
-        this._router.get('/equipos', this.getEquipos);
-        this._router.get('/personal/:idEscuderia', this.getPersonalEscuderia);
-        this._router.get('/equipos/:idEscuderia', this.getEquipoId);
-        this._router.get('/recambios', this.getRecambios);
-        this._router.get('/reparacion/:idReparacion', this.getReparacionId);
+        this._router.get('/equipos', this.getEquipos); // Se usa en Angular
+        this._router.get('/personal/:idEscuderia', this.getPersonalEscuderia); // Se usa en Angular
+        this._router.get('/equipos/:idEscuderia', this.getEquipoId); // Se usa en Angular
+        this._router.get('/recambios', this.getRecambios); // Se usa en Angular
+        this._router.get('/reparacion/:idReparacion', this.getReparacionId); // Se usa en Angular
         this._router.get('/vehiculos', this.getVehiculos);
         this._router.get('/granPremios', this.getGranPremios);
-        this._router.get('/reparaciones', this.getReparaciones);
-        this._router.get('/precioRecambios/:idPieza', this.getPrecioXReparacion);
-        this._router.get('/comparacion/:idEscuderia', this.getComparacion);
+        this._router.get('/reparaciones', this.getReparaciones); // Se usa en Angular
+        this._router.get('/precioRecambios/:idPieza', this.getPrecioXReparacion); // Se usa en Angular
+        this._router.get('/comparacion/:idEscuderia', this.getComparacion); // Se usa en Angular
         this._router.get('/puntos', this.getPuntos);
-        this._router.get('/getPuntosPilotos', this.getPuntosPilotos);
+        this._router.get('/getPuntosPilotos', this.getPuntosPilotos); // Se usa en Angular
         this._router.get('/escuderia', this.getEscuderia);
-        this._router.get('/salarios/:idEscuderia', this.getSalarios);
-        this._router.post('/equipo', this.postEquipo);
+        this._router.get('/salarios/:idEscuderia', this.getSalarios); // Se usa en Angular
+        this.router.post('/reparacionGorda', this.updateReparacionGorda); // Se usa en Angular
+        this._router.post('/equipo', this.postEquipo); // Se usa en Angular
         this._router.post('/reparacion', this.postReparacion);
-        this._router.post('/monoplaza', this.postMonoplaza); //para la subclases de vehiculos
+        this._router.post('/monoplaza', this.postMonoplaza);
         this._router.post('/recambio', this.postRecambio);
         this._router.post('/personal', this.postPersonal);
         this._router.post('/personal/piloto', this.postPiloto);
         this._router.post('/personal/ingeniero', this.postIngeniero);
         this._router.post('/personal/mecanico', this.postMecanico);
-        this._router.post('/granPremio', this.postGranPremio); //funciona
+        this._router.post('/granPremio', this.postGranPremio);
         this._router.post('/boxes', this.postBox);
         this._router.put('/recambio/:idPieza', this.updateRecambio); //perfect
-        this._router.put('/reparacion/:idReparacion', this.updateReparacion);
-        this._router.put('/equipo/:idEscuderia', this.updateEquipo);
-        this.router.post('/reparacionGorda', this.updateReparacionGorda);
+        this._router.put('/reparacion/:idReparacion', this.updateReparacion); // Se usa en Angular
+        this._router.put('/equipo/:idEscuderia', this.updateEquipo); // Se usa en Angular
         this._router.delete('/personal/:idPersonal', this.deletePersonal);
-        this._router.delete('/equipo/:idEscuderia', this.deleteEscuderia);
-        this._router.delete('/recambio/:idPieza', this.deletePieza);
+        this._router.delete('/equipo/:idEscuderia', this.deleteEscuderia); // Se usa en Angular
+        this._router.delete('/recambio/:idPieza', this.deletePieza); // Se usa en Angular
     }
 }
 const obj = new Routes();
