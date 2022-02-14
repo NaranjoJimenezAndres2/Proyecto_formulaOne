@@ -1,4 +1,5 @@
 import {Schema, model } from 'mongoose';
+var uniqueValidator = require('mongoose-unique-validator');
 
 const recambioSchema = new Schema({
     _idPieza: {
@@ -40,5 +41,5 @@ export type iRecambio = {
     _idEscuderia: string,
 }
 
-
+recambioSchema.plugin(uniqueValidator, { message: 'Error, el recambio ya existe' });
 export const Recambios = model('Recambios', recambioSchema);
