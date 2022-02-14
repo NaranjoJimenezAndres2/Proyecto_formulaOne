@@ -155,7 +155,7 @@ class Routes {
     }
 
 
-    //esto funciona al pelo
+    
     private getSalarios = async (req: Request, res: Response) => {
         await db.conectarBD()
             .then(async () => {
