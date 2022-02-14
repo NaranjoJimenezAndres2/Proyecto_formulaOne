@@ -45,6 +45,6 @@ export type iReparacion = {
 }
 
 
-reparacionSchema.plugin(uniqueValidator, { message: 'Error, el jugador ya existe' });
+reparacionSchema.plugin(uniqueValidator, { message: 'Error, la reparacion ya existe' });
 
 export const Reparaciones = model('Reparaciones', reparacionSchema);
